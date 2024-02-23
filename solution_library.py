@@ -92,6 +92,11 @@ def preprocess_xy(dataframe):
     design_matrix = pd.get_dummies(objects_filled, columns=['pol_usage', 'drv_sex2', 'vh_fuel'], dtype=int)
     objects_design = design_matrix.drop(columns=['id_policy'])
 
+    try:
+        categorical_filled = categorical_filled.drop(columns=['Unnamed: 0'])
+    except:
+        pass
+
     df = pd.concat([objects_design, categorical_filled, continuous_filled], axis = 1)
 
     x = df.iloc[:,:-1]
@@ -132,13 +137,18 @@ def preprocess_x(dataframe):
     continuous_filled = pd.DataFrame(continuous_filled, columns=continuous.columns.to_list())
 
     design_matrix = pd.get_dummies(objects_filled, columns=['pol_usage', 'drv_sex2', 'vh_fuel'], dtype=int)
+
+    ids = design_matrix[['id_policy']]
     objects_design = design_matrix.drop(columns=['id_policy'])
 
-    categorical_filled = categorical_filled.drop(columns=['Unnamed: 0'])
+    try:
+        categorical_filled = categorical_filled.drop(columns=['Unnamed: 0'])
+    except:
+        pass
 
     df = pd.concat([objects_design, categorical_filled, continuous_filled], axis = 1)
 
-    return df
+    return df, ids
 
 
 def evaluate_scratch(claims, model):
@@ -150,5 +160,19 @@ def evaluate_scratch(claims, model):
 
 
 def predict(x, model):
-    x_new = preprocess_x(x)
-    return model.predict(x_new)
+    x_new, ids = preprocess_x(x)
+
+    ret = pd.concat([ids, pd.DataFrame(model.predict(x_new), columns=['claim_amount'])], axis = 1)
+
+    return ret
+
+
+
+def test_save_model(model, filename):
+    claims = load_claims()
+    x_train, x_test, y_train, y_test = preprocess_xy(claims)
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
+    print(f'Training RMSE: {RMSE(y_pred, y_test)}')
+    predictions = predict(load_tests(), model)
+    predictions.to_csv(f'models/{filename}')
