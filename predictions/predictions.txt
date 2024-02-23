@@ -1,0 +1,9 @@
+Predictions Info
+
+v0: RMSE = 1373.5700959204958, trained on Voting Regressor (30-NN and SVR)
+v1: RMSE = 1419.327930017837, trained on Support Vector Regression
+v2: RMSE = 1503.009063935228, trained on Random Forest Regressor
+v3: RMSE = 1377.135249113952, trained on 35-Nearest Neighbors
+v4: RMSE = 1375.2200186168573, trained on 44-Nearest Neighbors
+v5: RMSE = 1373.8806789085725, trained on Voting Regressor (35-NN and SVR)
+v6: RMSE = 1373.0245271527876, trained on Voting Regressor (44-NN and SVR)

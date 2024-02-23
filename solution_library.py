@@ -173,6 +173,8 @@ def test_save_model(model, filename):
     x_train, x_test, y_train, y_test = preprocess_xy(claims)
     model.fit(x_train, y_train)
     y_pred = model.predict(x_test)
-    print(f'Training RMSE: {RMSE(y_pred, y_test)}')
+    rmse = RMSE(y_pred, y_test)
+    print(f'Training RMSE for {str(model)}: {rmse}')
     predictions = predict(load_tests(), model)
-    predictions.to_csv(f'models/{filename}')
+    predictions.to_csv(f'predictions/{filename}')
+    return rmse
