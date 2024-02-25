@@ -7,3 +7,13 @@ v3: RMSE = 1377.135249113952, trained on 35-Nearest Neighbors
 v4: RMSE = 1375.2200186168573, trained on 44-Nearest Neighbors
 v5: RMSE = 1373.8806789085725, trained on Voting Regressor (35-NN and SVR)
 v6: RMSE = 1373.0245271527876, trained on Voting Regressor (44-NN and SVR)
+
+nn_v1: RMSE = 1416.9009, trained on torch.nn
+
+Commentary:
+- v1 and nn_v1 model appears to make predictions at random (see data, all centered at ~700 and ~1100)
+- v5 and v6 data seems good. v3 and v4 also, and v2 too.
+
+Next Steps:
+- find way to compare outputs from v2, v2, v3, v4, v5
+- create new models by averaging them?
